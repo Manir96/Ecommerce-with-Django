@@ -1,0 +1,32 @@
+{% extends 'Shop/base.html' %}
+{% load static %}
+{% block title %}Product Search{% endblock title %}
+{% block main-content %}
+<div class="content my -5">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                {% if products %}
+                {% for product in products %}
+                <div class="col-sm-4 text-center mb-4">
+                    <a href="{% url 'product-detail' product.id %}" class="btn">
+                        <div class="item">
+                        <img src="{{product.product_image.url}}" alt="" height="300">
+                        <div class="fw-bold">{{product.title}}</div>
+                        <div class="fw-bold">Tk. {{product.discount_price}}
+                            <small class="fw-light text-decoration-line-through">{{product.selling_price}}</small>
+                        </div>
+                        </div>
+                    </a>
+
+                </div>
+                {% endfor %}
+                {% else %}
+                <h1>Stock out</h1>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock main-content %}

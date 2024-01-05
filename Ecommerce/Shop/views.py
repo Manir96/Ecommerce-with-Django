@@ -129,7 +129,8 @@ def show_cart(request):
          return render(request, 'Shop/addtocart.html', {'carts':cart, 'totalamount':totalamount,'amount':amount,'totalitem':totalitem })
       else:
          return render(request, 'Shop/emptycart.html')
-
+     
+@login_required
 def buy_now(request):
     totalitem = 0
     if request.user.is_authenticated:
@@ -248,7 +249,29 @@ def payment_done(request):
         OrderPlaced(user=user, customer=customer, product = c.product, quantity = c.quantity).save()
         c.delete()
 
-    return redirect('orders') 
+    return redirect('orders')
+
+
+def search_view(request):
+    query = request.GET.get('query', '')
+    products = Product.objects.filter(title__icontains=query)
+    context = {'products': products, 'query': query}
+    return render(request, 'Shop/search.html', context) 
+
+
+# class search(View):
+#     template_name = 'shop/search.html'
+
+#     def get(self, request, *args, **kwargs):
+#         query = request.GET.get('query')
+#         producttt = None
+
+#         if query:
+#             producttt = Product.objects.filter(title__icontains=query)
+
+#         return render(request, self.template_name, {
+#             'products': producttt,
+#         })       
 
 
 
